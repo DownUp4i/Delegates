@@ -3,23 +3,19 @@ using UnityEngine.UI;
 
 public class TimerSliderUI : MonoBehaviour
 {
-    [SerializeField] private TimerHandler _timer;
+    private Timer _timer;
     [SerializeField] private Slider _slider;
 
-    private void Awake()
+    public void Init(Timer timer)
     {
-        OnReset();
-
-        _timer.SecondPassed += OnUpdateSlider;
-        _timer.Reseted += OnReset;
+        _timer = timer;
+        _timer.TimeChanged += OnUpdateSlider;
     }
 
     private void OnDestroy()
     {
-        _timer.SecondPassed -= OnUpdateSlider;
-        _timer.Reseted -= OnReset;
+        _timer.TimeChanged -= OnUpdateSlider;
     }
 
-    private void OnUpdateSlider() => _slider.value = _timer.TimeLeft / _timer.StartTime;
-    private void OnReset() => _slider.value = 1;
+    private void OnUpdateSlider(float value) => _slider.value = value / _timer.StartTime;
 }

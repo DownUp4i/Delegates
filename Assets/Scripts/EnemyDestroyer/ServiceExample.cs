@@ -1,59 +1,63 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ServiceExample : MonoBehaviour
 {
+    [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private int _maxCountInService;
-    private float _time;
+    [SerializeField] private int _timeToDestroyEnemy;
 
     private EnemyDestroyer _enemyDestroyer;
+
+    private Enemy _enemy;
 
     private void Awake()
     {
         _enemyDestroyer = new EnemyDestroyer();
     }
 
-    private void Start()
-    {
-        //_enemyDestroyer.AddEnemy(enemy, new List<Func<bool>>
-        //{
-        //    () => Time.time - time >= 5,
-        //    () => enemy.IsDead == true,
-        //    () => _enemyDestroyer.Enemies.Count > _maxCountInService,
-        //});
-    }
-
     private void Update()
     {
-        _time = Time.time;
-
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            _enemyDestroyer.AddEnemy(new Enemy(), new List<Func<bool>>
-            {
-                () => Time.time - _time >= 5,
-            });
+            float time = Time.time;
+
+            _enemyDestroyer.AddEnemy(Instantiate(_enemyPrefab),
+                () => Time.time - time > _timeToDestroyEnemy);
         }
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Enemy enemy = new Enemy();
-            enemy.SetDead();
-            _enemyDestroyer.AddEnemy(enemy, new List<Func<bool>>
-            {
-                () => enemy.IsDead,
-            });
+            _enemy = Instantiate(_enemyPrefab);
+            _enemyDestroyer.AddEnemy(_enemy,
+                () => _enemy.IsDead);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            _enemyDestroyer.AddEnemy(new Enemy(), new List<Func<bool>>
-            {
-                () => _enemyDestroyer.Enemies.Count < _maxCountInService,
-            });
+            _enemyDestroyer.AddEnemy(Instantiate(_enemyPrefab),
+                () => _enemyDestroyer.Enemies.Count > _maxCountInService);
         }
 
-        Debug.Log(_enemyDestroyer.Enemies.Count);
+        if (Input.GetKeyDown(KeyCode.S))
+            if (_enemy != null)
+                _enemy.SetDead();
+    }
+
+    private void LateUpdate()
+    {
+        foreach (KeyValuePair<Enemy, Func<bool>> pair in _enemyDestroyer.Enemies.ToList())
+        {
+            Enemy enemy = pair.Key;
+            Func<bool> condition = pair.Value;
+
+            if (condition() == true)
+            {
+                _enemyDestroyer.RemoveEnemy(enemy);
+                Destroy(enemy.gameObject);
+            }
+        }
     }
 }

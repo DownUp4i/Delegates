@@ -1,54 +1,58 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class HeartTimerUI : MonoBehaviour
 {
     [SerializeField] private Heart _heartPrefab;
-    [SerializeField] private TimerHandler _timerHandler;
+    [SerializeField] private Timer _timer;
+
+    private int _seconds;
+    private int _prevSecond = -1;
 
     private List<Heart> _hearts = new List<Heart>();
 
-    private void Awake()
+    public void Init(Timer timer)
     {
-        _timerHandler.SecondPassed += RemoveHeart;
-        _timerHandler.Reseted += OnReset;
-    }
+        _timer = timer;
+        _timer.TimeChanged += DetermineSeconds;
+        _timer.Reseted += OnReset;
 
-    private void Start()
-    {
-        OnReset();
+        int seconds = Mathf.CeilToInt(_timer.StartTime);
+
+        for (int i = 0; i < seconds; i++)
+            _hearts.Add(Instantiate(_heartPrefab, transform));
     }
 
     private void OnReset()
     {
-        foreach (Heart heart in _hearts)
-        {
-            Destroy(heart.gameObject);
-        }
+        int seconds = Mathf.CeilToInt(_timer.StartTime);
+
+        if (_hearts.Count > 0)
+            for (int i = 0; i < _hearts.Count; i++)
+                Destroy(_hearts[i].gameObject);
 
         _hearts.Clear();
 
-
-        for (int i = 0; i < _timerHandler.StartTime; i++)
-        {
+        for (int i = 0; i < seconds; i++)
             _hearts.Add(Instantiate(_heartPrefab, transform));
-        }
     }
 
-    private void RemoveHeart()
-    {
-        int heartsQuantity = _hearts.Count;
+    private void DetermineSeconds(float value) => RemoveHeart(Mathf.CeilToInt(value));
 
-        if (heartsQuantity > 0)
-        {
-            Destroy(_hearts[heartsQuantity - 1].gameObject);
-            _hearts.RemoveAt(heartsQuantity - 1);
-        }
+    private void RemoveHeart(int second)
+    {
+        if (_hearts.Count == 0) return;
+
+        if (second == _prevSecond) return;
+        _prevSecond = second;
+
+        Destroy(_hearts[_hearts.Count - 1].gameObject);
+        _hearts.RemoveAt(_hearts.Count - 1);
     }
 
     private void OnDestroy()
     {
-        _timerHandler.SecondPassed -= RemoveHeart;
-        _timerHandler.Reseted -= OnReset;
+        _timer.TimeChanged -= DetermineSeconds;
     }
 }

@@ -1,43 +1,60 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Timer
 {
-    private float _startTime;
+    private MonoBehaviour _coroutineRunner;
+    private Coroutine _coroutine;
+
+    public event Action<float> TimeChanged;
+    public event Action Reseted;
+
     private bool _isRunning;
 
+    private float _startTime;
     private float _timeLeft;
-    public float TimeLeft => _timeLeft;
 
-    public Timer(float startTime)
+    public float TimeLeft => _timeLeft;
+    public float StartTime => _startTime;
+
+    public Timer(float startTime, MonoBehaviour coroutineRunner)
     {
         _startTime = startTime;
         _timeLeft = _startTime;
+        _coroutineRunner = coroutineRunner;
     }
 
     public void Start()
     {
         _isRunning = true;
+
+        if (_coroutine != null)
+            _coroutineRunner.StopCoroutine(_coroutine);
+
+        _coroutine = _coroutineRunner.StartCoroutine(UpdateTimer());
     }
 
-    public void Stop()
-    {
-        _isRunning = false;
-    }
+    public void Stop() => _isRunning = false;
 
     public void Reset()
     {
         _timeLeft = _startTime;
+        Reseted?.Invoke();
     }
 
-    public void Update()
+    private IEnumerator UpdateTimer()
     {
-        if (!_isRunning)
-            return;
+        while (_isRunning && _timeLeft > 0)
+        {
+            TimeChanged?.Invoke(_timeLeft);
+            _timeLeft -= Time.deltaTime;
+            yield return null;
+        }
 
-        _timeLeft -= Time.deltaTime;
+        _isRunning = false;
+        _coroutine = null;
 
-        if(_timeLeft < 0 )
-            _timeLeft = 0;
+        yield return null;
     }
 }

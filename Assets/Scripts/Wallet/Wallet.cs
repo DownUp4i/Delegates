@@ -1,42 +1,44 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Wallet
 {
-    private WalletStorage _storage;
+    private Dictionary<CoinType, int> _wallet;
 
-    public Wallet ()
+    public Action<CoinType, int> ValueChanged;
+
+    public Wallet(int initCoinValue, int initDiamondValue, int initEnergyValue)
     {
-        _storage = new WalletStorage();
+        _wallet = new Dictionary<CoinType, int>
+        {
+            { CoinType.Coin, initCoinValue },
+            { CoinType.Diamond, initDiamondValue },
+            { CoinType.Energy, initEnergyValue },
+        };
     }
 
-    public void InitStorage() => _storage.Init();
-
-    public void OnAddValue(WalletType type, int value)
+    public void AddValue(CoinType type, int value)
     {
-        foreach(WalletItem item in _storage.WalletItems)
+        if (_wallet.ContainsKey(type))
         {
-            if(item.WalletType == type)
-            {
-                item.AddValue(value);
-                item.GetInfo();
-            }
+            if (value > 0)
+                _wallet[type] += value;
+
+            ValueChanged?.Invoke(type, _wallet[type]);
         }
     }
 
-    public void OnRemoveValue(WalletType type, int value)
+    public void RemoveValue(CoinType type, int value)
     {
-        foreach (WalletItem item in _storage.WalletItems)
+        if (_wallet.ContainsKey(type))
         {
-            if (item.WalletType == type)
-            {
-                item.RemoveValue(value);
-                item.GetInfo();
-            }
+            if (_wallet[type] >= value && value >= 0)
+                _wallet[type] -= value;
+
+            ValueChanged?.Invoke(type, _wallet[type]);
         }
     }
 
-    public List<WalletItem> GetWalletItems() => _storage.WalletItems;
+    public int GetValueBy(CoinType type) => _wallet[type];
 }
