@@ -7,4 +7,6 @@ public class Enemy : MonoBehaviour
     public bool IsDead => _isDead;
 
     public void SetDead() => _isDead = true;
+
+    public void Destroy() => Destroy(gameObject);
 }

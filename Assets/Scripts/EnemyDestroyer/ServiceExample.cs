@@ -48,16 +48,7 @@ public class ServiceExample : MonoBehaviour
 
     private void LateUpdate()
     {
-        foreach (KeyValuePair<Enemy, Func<bool>> pair in _enemyDestroyer.Enemies.ToList())
-        {
-            Enemy enemy = pair.Key;
-            Func<bool> condition = pair.Value;
-
-            if (condition() == true)
-            {
-                _enemyDestroyer.RemoveEnemy(enemy);
-                Destroy(enemy.gameObject);
-            }
-        }
+        _enemyDestroyer.Update();
     }
+
 }

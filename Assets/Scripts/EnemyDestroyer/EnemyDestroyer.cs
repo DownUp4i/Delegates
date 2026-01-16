@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyDestroyer
 {
@@ -12,4 +12,19 @@ public class EnemyDestroyer
 
     public void AddEnemy(Enemy enemy, Func<bool> conditions) => _enemies.Add(enemy, conditions);
     public void RemoveEnemy(Enemy enemy) => _enemies.Remove(enemy);
+
+    public void Update()
+    {
+        foreach (KeyValuePair<Enemy, Func<bool>> pair in _enemies.ToList())
+        {
+            Enemy enemy = pair.Key;
+            Func<bool> condition = pair.Value;
+
+            if (condition() == true)
+            {
+                RemoveEnemy(enemy);
+                enemy.Destroy();
+            }
+        }
+    }
 }

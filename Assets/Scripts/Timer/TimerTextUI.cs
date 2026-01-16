@@ -15,6 +15,11 @@ public class TimerTextUI : MonoBehaviour
         _timerText.text = timer.StartTime.ToString("00:00");
     }
 
+    private void OnDestroy()
+    {
+        _timer.TimeChanged -= DetermineSeconds;
+    }
+
     private void DetermineSeconds(float value) => OnTextChange(Mathf.FloorToInt(value));
 
     private void OnTextChange(int value) => _timerText.text = value.ToString("00:00");

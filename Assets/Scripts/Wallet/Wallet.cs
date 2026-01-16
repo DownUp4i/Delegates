@@ -8,14 +8,9 @@ public class Wallet
 
     public Action<CoinType, int> ValueChanged;
 
-    public Wallet(int initCoinValue, int initDiamondValue, int initEnergyValue)
+    public Wallet(Dictionary<CoinType, int> wallet)
     {
-        _wallet = new Dictionary<CoinType, int>
-        {
-            { CoinType.Coin, initCoinValue },
-            { CoinType.Diamond, initDiamondValue },
-            { CoinType.Energy, initEnergyValue },
-        };
+        _wallet = new Dictionary<CoinType, int>(wallet);
     }
 
     public void AddValue(CoinType type, int value)
@@ -23,9 +18,10 @@ public class Wallet
         if (_wallet.ContainsKey(type))
         {
             if (value > 0)
+            {
                 _wallet[type] += value;
-
-            ValueChanged?.Invoke(type, _wallet[type]);
+                ValueChanged?.Invoke(type, _wallet[type]);
+            }
         }
     }
 
@@ -34,9 +30,10 @@ public class Wallet
         if (_wallet.ContainsKey(type))
         {
             if (_wallet[type] >= value && value >= 0)
+            {
                 _wallet[type] -= value;
-
-            ValueChanged?.Invoke(type, _wallet[type]);
+                ValueChanged?.Invoke(type, _wallet[type]);
+            }
         }
     }
 

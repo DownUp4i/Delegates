@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WalletExample : MonoBehaviour
@@ -11,10 +12,17 @@ public class WalletExample : MonoBehaviour
 
     private bool _isInstance;
 
+    private Dictionary<CoinType, int> _startWallet = new Dictionary<CoinType, int>
+    {
+        { CoinType.Coin, 100 },
+        { CoinType.Energy, 5 },
+        { CoinType.Diamond, 5 }
+    };
+
     private void Awake()
     {
         _isInstance = false;
-        _wallet = new Wallet(0, 0, 0);
+        _wallet = new Wallet(_startWallet);
     }
 
     private void Update()
