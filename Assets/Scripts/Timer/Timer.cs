@@ -7,23 +7,24 @@ public class Timer
     private MonoBehaviour _coroutineRunner;
     private Coroutine _coroutine;
 
-    public event Action<float> TimeChanged;
+    private ReactiveVariable<float> _timeLeft;
+
     public event Action Reseted;
 
     private bool _isRunning;
 
     private float _startTime;
-    private float _timeLeft;
-
-    public float TimeLeft => _timeLeft;
-    public float StartTime => _startTime;
 
     public Timer(float startTime, MonoBehaviour coroutineRunner)
     {
         _startTime = startTime;
-        _timeLeft = _startTime;
         _coroutineRunner = coroutineRunner;
+
+        _timeLeft = new ReactiveVariable<float>(_startTime);
     }
+
+    public float StartTime => _startTime;
+    public ReactiveVariable<float> TimeLeft => _timeLeft;
 
     public void Start()
     {
@@ -39,16 +40,15 @@ public class Timer
 
     public void Reset()
     {
-        _timeLeft = _startTime;
+        _timeLeft.Value = _startTime;
         Reseted?.Invoke();
     }
 
     private IEnumerator UpdateTimer()
     {
-        while (_isRunning && _timeLeft > 0)
+        while (_isRunning && _timeLeft.Value > 0)
         {
-            TimeChanged?.Invoke(_timeLeft);
-            _timeLeft -= Time.deltaTime;
+            _timeLeft.Value -= Time.deltaTime;
             yield return null;
         }
 

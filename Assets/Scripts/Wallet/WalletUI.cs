@@ -21,8 +21,6 @@ public class WalletUI : MonoBehaviour
     {
         _wallet = wallet;
 
-        _wallet.ValueChanged += UpdateUICoin;
-
         _coin = Instantiate(_coinPrefab, _currencyParent);
         _diamond = Instantiate(_diamonPrefab, _currencyParent);
         _energy = Instantiate(_energyPrefab, _currencyParent);
@@ -31,6 +29,13 @@ public class WalletUI : MonoBehaviour
         _diamond.UpdateValue(wallet.GetValueBy(CoinType.Diamond));
         _energy.UpdateValue(wallet.GetValueBy(CoinType.Energy));
 
+        foreach (KeyValuePair<CoinType, ReactiveVariable<int>> pair in _wallet.WalletBalance)
+        {
+            CoinType type = pair.Key;
+            ReactiveVariable<int> value = pair.Value;
+
+            value.Changed += value => UpdateUICoin(type, value);
+        }
     }
 
     private void UpdateUICoin(CoinType type, int value)
@@ -47,7 +52,13 @@ public class WalletUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        _wallet.ValueChanged -= UpdateUICoin;
+        foreach (KeyValuePair<CoinType, ReactiveVariable<int>> pair in _wallet.WalletBalance)
+        {
+            CoinType type = pair.Key;
+            ReactiveVariable<int> value = pair.Value;
+
+            value.Changed -= value => UpdateUICoin(type, value);
+        }
     }
 }
 

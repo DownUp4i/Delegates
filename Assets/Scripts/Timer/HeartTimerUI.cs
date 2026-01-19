@@ -15,7 +15,7 @@ public class HeartTimerUI : MonoBehaviour
     public void Init(Timer timer)
     {
         _timer = timer;
-        _timer.TimeChanged += DetermineSeconds;
+        _timer.TimeLeft.Changed += DetermineSeconds;
         _timer.Reseted += OnReset;
 
         int seconds = Mathf.CeilToInt(_timer.StartTime);
@@ -42,17 +42,18 @@ public class HeartTimerUI : MonoBehaviour
 
     private void RemoveHeart(int second)
     {
-        if (_hearts.Count == 0) return;
+        if (_hearts.Count <= 0) return;
 
         if (second == _prevSecond) return;
-        _prevSecond = second;
 
         Destroy(_hearts[_hearts.Count - 1].gameObject);
         _hearts.RemoveAt(_hearts.Count - 1);
+
+        _prevSecond = second;
     }
 
     private void OnDestroy()
     {
-        _timer.TimeChanged -= DetermineSeconds;
+        _timer.TimeLeft.Changed -= DetermineSeconds;
     }
 }

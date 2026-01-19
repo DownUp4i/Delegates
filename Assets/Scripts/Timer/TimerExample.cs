@@ -15,7 +15,6 @@ public class TimerExample : MonoBehaviour
     private bool _isInstance;
 
     public float StartTime => _startTime;
-    public float TimeLeft => _timer.TimeLeft;
 
     private void Awake()
     {

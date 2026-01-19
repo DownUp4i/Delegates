@@ -9,12 +9,12 @@ public class TimerSliderUI : MonoBehaviour
     public void Init(Timer timer)
     {
         _timer = timer;
-        _timer.TimeChanged += OnUpdateSlider;
+        _timer.TimeLeft.Changed += OnUpdateSlider;
     }
 
     private void OnDestroy()
     {
-        _timer.TimeChanged -= OnUpdateSlider;
+        _timer.TimeLeft.Changed -= OnUpdateSlider;
     }
 
     private void OnUpdateSlider(float value) => _slider.value = value / _timer.StartTime;

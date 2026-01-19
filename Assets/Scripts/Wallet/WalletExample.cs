@@ -12,16 +12,25 @@ public class WalletExample : MonoBehaviour
 
     private bool _isInstance;
 
-    private Dictionary<CoinType, int> _startWallet = new Dictionary<CoinType, int>
-    {
-        { CoinType.Coin, 100 },
-        { CoinType.Energy, 5 },
-        { CoinType.Diamond, 5 }
-    };
+    private ReactiveVariable<int> _coin;
+    private ReactiveVariable<int> _diamond;
+    private ReactiveVariable<int> _energy;
 
     private void Awake()
     {
         _isInstance = false;
+
+        _coin = new ReactiveVariable<int>(0);
+        _diamond = new ReactiveVariable<int>(0);
+        _energy = new ReactiveVariable<int>(0);
+
+        Dictionary<CoinType, ReactiveVariable<int>> _startWallet = new Dictionary<CoinType, ReactiveVariable<int>>
+        {
+            { CoinType.Coin, _coin},
+            { CoinType.Energy, _diamond },
+            { CoinType.Diamond, _energy }
+        };
+
         _wallet = new Wallet(_startWallet);
     }
 
