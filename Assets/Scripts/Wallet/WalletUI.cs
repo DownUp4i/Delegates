@@ -29,36 +29,21 @@ public class WalletUI : MonoBehaviour
         _diamond.UpdateValue(wallet.GetValueBy(CoinType.Diamond));
         _energy.UpdateValue(wallet.GetValueBy(CoinType.Energy));
 
-        foreach (KeyValuePair<CoinType, ReactiveVariable<int>> pair in _wallet.WalletBalance)
+        foreach (KeyValuePair<CoinType, IReadOnlyReactiveVariable<int>> pair in _wallet.WalletBalance)
         {
             CoinType type = pair.Key;
-            ReactiveVariable<int> value = pair.Value;
+            IReadOnlyReactiveVariable<int> value = pair.Value;
 
-            value.Changed += value => UpdateUICoin(type, value);
+            if (type == CoinType.Coin)
+                _coin.Initialize(value);
+
+            if (type == CoinType.Diamond)
+                _diamond.Initialize(value);
+
+            if (type == CoinType.Energy)
+                _energy.Initialize(value);
         }
     }
 
-    private void UpdateUICoin(CoinType type, int value)
-    {
-        if (type == CoinType.Coin)
-            _coin.UpdateValue(value);
-
-        if (type == CoinType.Diamond)
-            _diamond.UpdateValue(value);
-
-        if (type == CoinType.Energy)
-            _energy.UpdateValue(value);
-    }
-
-    private void OnDestroy()
-    {
-        foreach (KeyValuePair<CoinType, ReactiveVariable<int>> pair in _wallet.WalletBalance)
-        {
-            CoinType type = pair.Key;
-            ReactiveVariable<int> value = pair.Value;
-
-            value.Changed -= value => UpdateUICoin(type, value);
-        }
-    }
 }
 

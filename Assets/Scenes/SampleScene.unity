@@ -247,18 +247,6 @@ MonoBehaviour:
     <Damage>k__BackingField: 0
     <MoveSpeed>k__BackingField: 0
     <Agility>k__BackingField: 0
-  - <Prefab>k__BackingField: {fileID: -6907284296345805217, guid: 8a8aa5c328d2b4d4799e022d720b15fa,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <MoveSpeed>k__BackingField: 0
-    <Agility>k__BackingField: 0
-  - <Prefab>k__BackingField: {fileID: -6907284296345805217, guid: 8a8aa5c328d2b4d4799e022d720b15fa,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <MoveSpeed>k__BackingField: 0
-    <Agility>k__BackingField: 0
 --- !u!4 &185943935
 Transform:
   m_ObjectHideFlags: 0
@@ -559,18 +547,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
-  - <Prefab>k__BackingField: {fileID: 8041814152131881899, guid: 6a742a2c96703f242b444c298e53b692,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <MoveSpeed>k__BackingField: 0
-    <Strength>k__BackingField: 0
-  - <Prefab>k__BackingField: {fileID: 8041814152131881899, guid: 6a742a2c96703f242b444c298e53b692,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <MoveSpeed>k__BackingField: 0
-    <Strength>k__BackingField: 0
   - <Prefab>k__BackingField: {fileID: 8041814152131881899, guid: 6a742a2c96703f242b444c298e53b692,
       type: 3}
     <Health>k__BackingField: 0
@@ -1153,26 +1129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dragonConfig:
-  - <Prefab>k__BackingField: {fileID: -7287166600708275720, guid: ad34d513dac345d41b070b5931e12105,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <FlySpeed>k__BackingField: 0
-  - <Prefab>k__BackingField: {fileID: -7287166600708275720, guid: ad34d513dac345d41b070b5931e12105,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <FlySpeed>k__BackingField: 0
-  - <Prefab>k__BackingField: {fileID: -7287166600708275720, guid: ad34d513dac345d41b070b5931e12105,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <FlySpeed>k__BackingField: 0
-  - <Prefab>k__BackingField: {fileID: -7287166600708275720, guid: ad34d513dac345d41b070b5931e12105,
-      type: 3}
-    <Health>k__BackingField: 0
-    <Damage>k__BackingField: 0
-    <FlySpeed>k__BackingField: 0
   - <Prefab>k__BackingField: {fileID: -7287166600708275720, guid: ad34d513dac345d41b070b5931e12105,
       type: 3}
     <Health>k__BackingField: 0

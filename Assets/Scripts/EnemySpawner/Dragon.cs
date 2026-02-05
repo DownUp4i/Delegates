@@ -11,13 +11,5 @@ namespace EnemySpawner
 
         public IReadOnlyList<DragonConfig> Config => _dragonConfig;
 
-        [Serializable]
-        public class DragonConfig
-        {
-            [field: SerializeField] public DragonPrefab Prefab { get; private set; }
-            [field: SerializeField] public int Health { get; private set; }
-            [field: SerializeField] public int Damage { get; private set; }
-            [field: SerializeField] public float FlySpeed { get; private set; }
-        }
     }
 }

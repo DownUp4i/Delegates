@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace EnemySpawner
@@ -14,27 +15,27 @@ namespace EnemySpawner
                 switch (enemy)
                 {
                     case Ork ork:
-                        OrkPrefab orkPrefab = ork.Config.FirstOrDefault(config => config.Prefab).Prefab;
+                        Ork orkConfig = ork.Config.FirstOrDefault(config => config.Prefab).Prefab;
 
-                        if (orkPrefab != null)
+                        if (orkConfig != null)
                             for (int i = 0; i < ork.Config.Count; i++)
-                                Instantiate(orkPrefab, new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity);
+                                Instantiate(orkConfig, new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity);
                         break;
 
                     case Elf elf:
-                        ElfPrefab elfPrefab = elf.Config.FirstOrDefault(config => config.Prefab).Prefab;
+                        Elf elfConfig = elf.Config.FirstOrDefault(config => config.Prefab).Prefab;
 
-                        if (elfPrefab != null)
+                        if (elfConfig != null)
                             for (int i = 0; i < elf.Config.Count; i++)
-                                Instantiate(elfPrefab, new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity);
+                                Instantiate(elfConfig, new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity);
                         break;
 
                     case Dragon dragon:
-                        DragonPrefab dragonPrefab = dragon.Config.FirstOrDefault(config => config.Prefab).Prefab;
+                        Dragon dragonConfig = dragon.Config.FirstOrDefault(config => config.Prefab).Prefab;
 
-                        if (dragonPrefab != null)
+                        if (dragonConfig != null)
                             for (int i = 0; i < dragon.Config.Count; i++)
-                                Instantiate(dragonPrefab, new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity);
+                                Instantiate(dragonConfig, new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity);
                         break;
                 }
             }

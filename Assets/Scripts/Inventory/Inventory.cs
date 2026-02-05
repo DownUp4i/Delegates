@@ -13,12 +13,10 @@ public class Inventory
     private Dictionary<Item, int> _items = new Dictionary<Item, int>();
 
     private int _maxSize;
-    private int _currentSize;
 
     public Inventory(Dictionary<Item, int> items, int maxSize)
     {
         _maxSize = maxSize;
-        _currentSize = 0;
 
         foreach (KeyValuePair<Item, int> item in items)
             TryAdd(item.Key, item.Value);
@@ -30,17 +28,17 @@ public class Inventory
     public bool TryAdd(Item item, int count)
     {
         if (count <= 0)
-            throw new InventoryException("Количество должно быть больше 0", count);
+            return false;
 
-        if (_currentSize + count > _maxSize)
-            throw new InventoryException($"Невозможно добавить {count} кол-во: не хватает места в инвентаре, Заполнено: {_currentSize}/{_maxSize}");
+        if (CurrentSize + count > _maxSize)
+            return false;
 
         Add(item, count);
 
         return true;
     }
 
-    public void Add(Item newItem, int count)
+    private void Add(Item newItem, int count)
     {
         if (_items.ContainsKey(newItem))
             _items[newItem] += count;
@@ -61,14 +59,14 @@ public class Inventory
     public bool TryGetItem(string name, int count)
     {
         if (count <= 0)
-            throw new InventoryException("Количество должно быть больше 0", count);
+            return false;
 
         foreach (Item item in _items.Keys.ToList())
         {
             if (item.Name == name)
             {
                 if (_items[item] < count)
-                    throw new InventoryException("Не хватает", count);
+                    return false;
                 else
                     _items[item] -= count;
 

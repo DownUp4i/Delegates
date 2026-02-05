@@ -55,5 +55,6 @@ public class HeartTimerUI : MonoBehaviour
     private void OnDestroy()
     {
         _timer.TimeLeft.Changed -= DetermineSeconds;
+        _timer.Reseted -= OnReset;
     }
 }
