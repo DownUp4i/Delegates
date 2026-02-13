@@ -4,14 +4,29 @@ using UnityEngine;
 
 public class Wallet
 {
-    private Dictionary<CoinType, IReadOnlyReactiveVariable<int>> _wallet;
+    private Dictionary<CoinType, ReactiveVariable<int>> _wallet;
 
-    public Wallet(Dictionary<CoinType, IReadOnlyReactiveVariable<int>> wallet)
+    public Wallet(Dictionary<CoinType, int> wallet)
     {
-        _wallet = new Dictionary<CoinType, IReadOnlyReactiveVariable<int>>(wallet);
+        _wallet = new Dictionary<CoinType, ReactiveVariable<int>>();
+
+        foreach (var currencyTypeAndValue in wallet)
+            _wallet[currencyTypeAndValue.Key] = new ReactiveVariable<int>(currencyTypeAndValue.Value);
     }
 
-    public IReadOnlyDictionary<CoinType, IReadOnlyReactiveVariable<int>> WalletBalance => _wallet;
+    public IEnumerable<CoinType> AvailableCurrencies => _wallet.Keys;
+    public IReadOnlyDictionary<CoinType, ReactiveVariable<int>> Balance => _wallet;
+
+    public bool TryGetValue(CoinType coinType, out IReadOnlyReactiveVariable<int> value)
+    {
+        value = null;
+        bool found = _wallet.TryGetValue(coinType, out ReactiveVariable<int> sourceValue);
+
+        if (found) 
+            value = sourceValue;
+
+        return found;
+    }
 
     public void AddValue(CoinType type, int value)
     {

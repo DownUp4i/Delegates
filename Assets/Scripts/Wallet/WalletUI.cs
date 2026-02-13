@@ -29,10 +29,12 @@ public class WalletUI : MonoBehaviour
         _diamond.UpdateValue(wallet.GetValueBy(CoinType.Diamond));
         _energy.UpdateValue(wallet.GetValueBy(CoinType.Energy));
 
-        foreach (KeyValuePair<CoinType, IReadOnlyReactiveVariable<int>> pair in _wallet.WalletBalance)
+
+
+        foreach (var pair in _wallet.Balance)
         {
-            CoinType type = pair.Key;
             IReadOnlyReactiveVariable<int> value = pair.Value;
+            CoinType type = pair.Key;
 
             if (type == CoinType.Coin)
                 _coin.Initialize(value);

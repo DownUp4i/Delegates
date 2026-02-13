@@ -28,7 +28,7 @@ public class Inventory
     public bool TryAdd(Item item, int count)
     {
         if (count <= 0)
-            return false;
+            throw new InventoryException("count");
 
         if (CurrentSize + count > _maxSize)
             return false;
@@ -59,7 +59,7 @@ public class Inventory
     public bool TryGetItem(string name, int count)
     {
         if (count <= 0)
-            return false;
+            throw new InventoryException("count");
 
         foreach (Item item in _items.Keys.ToList())
         {

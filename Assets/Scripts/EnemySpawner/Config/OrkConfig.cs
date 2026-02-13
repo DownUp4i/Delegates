@@ -7,7 +7,7 @@ using UnityEngine;
 namespace EnemySpawner
 {
     [Serializable]
-    public class OrkConfig : MonoBehaviour
+    public class OrkConfig : EnemyConfig
     {
         [field: SerializeField] public Ork Prefab { get; private set; }
         [field: SerializeField] public int Health { get; private set; }

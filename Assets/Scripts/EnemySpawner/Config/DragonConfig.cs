@@ -8,7 +8,7 @@ namespace EnemySpawner
 {
     [Serializable]
 
-    public class DragonConfig : MonoBehaviour
+    public class DragonConfig : EnemyConfig
     {
         [field: SerializeField] public Dragon Prefab { get; private set; }
         [field: SerializeField] public int Health { get; private set; }

@@ -7,7 +7,7 @@ namespace EnemySpawner
 {
     [Serializable]
 
-    public class ElfConfig : MonoBehaviour
+    public class ElfConfig : EnemyConfig
     {
         [field: SerializeField] public Elf Prefab { get; private set; }
         [field: SerializeField] public int Health { get; private set; }

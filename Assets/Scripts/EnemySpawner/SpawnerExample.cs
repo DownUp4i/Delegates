@@ -10,15 +10,15 @@ namespace EnemySpawner
     {
         [SerializeField] private EnemySpawner _enemySpawner;
 
-        [SerializeField] private Ork _ork;
-        [SerializeField] private Elf _elf;
-        [SerializeField] private Dragon _dragon;
+        [SerializeField] private OrkConfig _ork;
+        [SerializeField] private ElfConfig _elf;
+        [SerializeField] private DragonConfig _dragon;
 
-        private List<Enemy> _enemies;
+        private List<EnemyConfig> _enemies;
 
         private void Awake()
         {
-            _enemies = new List<Enemy>()
+            _enemies = new List<EnemyConfig>()
             {
                 _ork,
                 _elf,
@@ -28,7 +28,7 @@ namespace EnemySpawner
 
         private void Start()
         {
-            _enemySpawner.Spawn(_enemies);
+            _enemySpawner.Spawn(_ork);
         }
     }
 }
